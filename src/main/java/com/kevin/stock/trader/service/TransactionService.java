@@ -2,10 +2,12 @@ package com.kevin.stock.trader.service;
 
 import com.kevin.stock.trader.entity.Transactions;
 import com.kevin.stock.trader.repository.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Random;
@@ -38,8 +40,13 @@ public class TransactionService {
         // Save to the database
         Transactions transactions = new Transactions();
         // TODO: add more
-        transactionRepository.save(transactions);
+//        transactionRepository.save(transactions);
 
         System.out.println("Saved best price: " + bestPrice);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
+    public void createNewTransactions(Transactions transactions) {
+        transactionRepository.save(transactions);
     }
 }

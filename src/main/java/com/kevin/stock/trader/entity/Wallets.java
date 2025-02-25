@@ -9,7 +9,9 @@ public class Wallets {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
     private String currencies;
 
+    @Column
     private double balance;
 }
